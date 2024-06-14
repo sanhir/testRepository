@@ -34,14 +34,14 @@ jobs:
         curl -X POST -H 'Content-type: application/json' --data '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "<${{ github.event.comment.html_url }}|New Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}>",
+          "text": "<${{ github.event.comment.html_url }}|Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}>",
           "attachments":[
             {
                "fallback":"コメントが追加されました！",
                "author_name":"${{ github.event.comment.user.login }}",
                "author_icon":"${{ github.event.comment.user.avatar_url }}",
                "text": "${{ github.event.comment.body }}",
-               "footer": "${{ github.event.discussion.category.name }} 　#${{ github.event.discussion.number }}${{ github.event.discussion.title }} ${{ github.event.repository.full_name }}",
+               "footer": "${{ github.event.discussion.category.name }} #${{ github.event.discussion.number }}${{ github.event.discussion.title }} ${{ github.event.repository.full_name }}",
                "ts":'"$COMMENT_TIMESTAMP"'
             }
         ]
