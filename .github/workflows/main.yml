@@ -14,25 +14,23 @@ jobs:
     - name: Determine Slack Webhook URL
       id: determine_url
       run: |
-        case "${{ github.event.discussion.category.name }}" in
-          "General")
-            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-          "Support")
-            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-          "Features")
-            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-          *)
-            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-        esac
+        CATEGORY_NAME="${{ github.event.discussion.category.name }}"
+        if [[ "$CATEGORY_NAME" == *"FE"* && "$CATEGORY_NAME" == *"BE"* ]]; then
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_OTHER }}" >> $GITHUB_ENV
+        elif [[ "$CATEGORY_NAME" == *"FE"* ]]; then
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_FE }}" >> $GITHUB_ENV
+        elif [[ "$CATEGORY_NAME" == *"BE"* ]]; then
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_BE }}" >> $GITHUB_ENV
+        else
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_OTHER }}" >> $GITHUB_ENV
+        fi
 
     - name: Send notification to Slack
       env:
         SLACK_WEBHOOK_URL: ${{ steps.determine_url.outputs.webhook_url }}
       run: |
         curl -X POST -H 'Content-type: application/json' --data '{
-          "text": "New comment on discussion: ${{ github.event.discussion.html_url }}\nComment: ${{ github.event.comment.body }}"
+          "text": "New comment on discussion: ${{ github.event.discussion.html_url }}\nComment: ${{ github.event.comment.body }}",
+          "unfurl_links": true
+          
         }' $SLACK_WEBHOOK_URL
