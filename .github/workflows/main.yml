@@ -10,6 +10,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+    - run: echo "${{ toJSON(github.event.discussion) }}"
     - name: Determine Slack Webhook URL
       id: determine_url
       run: |
