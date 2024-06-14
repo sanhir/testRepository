@@ -29,19 +29,25 @@ jobs:
       env:
         SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
       run: |
+        COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
+        
+        # Convert the created_at timestamp to a Unix timestamp
+        COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
+
+        
         curl -X POST -H 'Content-type: application/json' --data '{
-          "username": "GitHub",
+          "username": "Discussion Comment",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
           "attachments":[
             {
                "fallback":"コメントが追加されました！",
                "author_name":"${{ github.event.comment.user.login }}",
                "author_icon":"${{ github.event.comment.user.avatar_url }}",
-               "title": "Discussion Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
+               "title": "Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
                "title_link":"${{ github.event.comment.html_url }}",
                "text": "${{ github.event.comment.body }}",
-               "footer": "Send by GitHub Actions",
-               "ts":"${{ github.event.comment.created_at }}"
+               "footer": "Lsut GitHub Discussions",
+               "ts":'"$COMMENT_TIMESTAMP"'
             }
         ]
         }' $SLACK_WEBHOOK_URL
