@@ -44,8 +44,16 @@ jobs:
                "fallback":"コメントが追加されました！",
                "author_name":"${{ github.event.comment.user.login }}",
                "author_icon":"${{ github.event.comment.user.avatar_url }}",
-               "text": "${{ github.event.comment.body }}",
-               "footer": "${{ github.event.category.name }} #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
+               "blocks": [
+                 {
+                   "type": "section",
+                   "text": {
+                     "type": "mrkdwn",
+                     "text": "${{ github.event.comment.body }}"
+                   }
+                 }
+               ],
+               "footer": "Lsut ${{ github.event.category.name }} #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
                "ts":'"$COMMENT_TIMESTAMP"'
             }
         ]
