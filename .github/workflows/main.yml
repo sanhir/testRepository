@@ -39,7 +39,7 @@ jobs:
                "author_icon":"${{ github.event.comment.user.avatar_url }}",
                "title": "Discussion Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
                "title_link":"${{ github.event.comment.html_url }}",
-              "blocks": [
+               "blocks": [
                   {
                     "type": "section",
                     "text": {
@@ -48,8 +48,7 @@ jobs:
                     }
                   }
                ],
-               "footer": "Send by GitHub Actions",
-               "ts":"${{ github.event.comment.created_at }}"
+               "footer": "Send by GitHub Actions"
             }
         ]
         }' $SLACK_WEBHOOK_URL
