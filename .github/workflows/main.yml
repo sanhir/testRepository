@@ -44,11 +44,7 @@ jobs:
                "fallback":"コメントが追加されました！",
                "author_name":"${{ github.event.comment.user.login }}",
                "author_icon":"${{ github.event.comment.user.avatar_url }}",
-               "blocks": [
-                 {
-                   "type": "section"
-                 }
-               ],
+               "text": "${{ github.event.comment.body }}",
                "footer": "${{ github.event.repository.name }}  ${{ github.event.discussion.category.name }} #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
                "ts":'"$COMMENT_TIMESTAMP"'
             }
