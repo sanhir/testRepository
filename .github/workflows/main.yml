@@ -10,7 +10,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "${{ toJSON(github.event.discussion) }}"
+    - run: echo "${{ toJSON(github.event) }}"
     - name: Determine Slack Webhook URL
       id: determine_url
       run: |
@@ -36,11 +36,11 @@ jobs:
                "fallback":"Discussionのコメントが更新されました",
                "pretext":"Discussionのコメントが更新されました",
                "title": "#${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
-               "title_link":"${{ github.event.discussion.html_url }}"
+               "title_link":"${{ github.event.discussion.html_url }}",
                "fields":[
                   {
-                     "title":"Twitter",
-                     "value":"なう"
+                     "title":"Comment",
+                     "value":${{ github.event.discussion.html_url }}"
                   }
                ],
                "footer": "GitHub Discussion",
