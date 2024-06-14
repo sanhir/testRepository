@@ -30,31 +30,36 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
       run: |
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
-        
-        # Convert the created_at timestamp to a Unix timestamp
         COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
+        COMMENT_URL="${{ github.event.comment.html_url }}"
+        COMMENT_BODY="${{ github.event.comment.body }}"
+        COMMENT_USER="${{ github.event.comment.user.login }}"
+        COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
+        DISCUSSION_TITLE="${{ github.event.discussion.title }}"
+        DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
+        DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
+        REPO_NAME="${{ github.event.repository.name }}"
 
-        
         curl -X POST -H 'Content-type: application/json' --data '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "<${{ github.event.comment.html_url }}|Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}>",
-          "attachments":[
+          "text": "<'"$COMMENT_URL"'|Comment on #'"$DISCUSSION_NUMBER"' '"$DISCUSSION_TITLE"'>",
+          "attachments": [
             {
-               "fallback":"コメントが追加されました！",
-               "author_name":"${{ github.event.comment.user.login }}",
-               "author_icon":"${{ github.event.comment.user.avatar_url }}",
-               "blocks": [
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "*New comment on discussion:*\n<$url|View Comment>\n\n*Comment:*\n$body\n\n*Created at:*\n$created_at"
-              }
+              "fallback": "コメントが追加されました！",
+              "author_name": "'"$COMMENT_USER"'",
+              "author_icon": "'"$COMMENT_USER_AVATAR"'",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*New comment on discussion:*\n<'"$COMMENT_URL"'|View Comment>\n\n*Comment:*\n'"$COMMENT_BODY"'\n\n*Created at:*\n'"$COMMENT_CREATED_AT"'"
+                  }
+                }
+              ],
+              "footer": "'"$DISCUSSION_CATEGORY"' #'"$DISCUSSION_NUMBER"' '"$DISCUSSION_TITLE"' '"$REPO_NAME"'",
+              "ts": '"$COMMENT_TIMESTAMP"'
             }
-          ],
-               "footer": "${{ github.event.discussion.category.name }} #${{ github.event.discussion.number }} ${{ github.event.discussion.title }} ${{ github.event.repository.name }}",
-               "ts":'"$COMMENT_TIMESTAMP"'
-            }
-        ]
+          ]
         }' $SLACK_WEBHOOK_URL
