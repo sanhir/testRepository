@@ -39,32 +39,9 @@ jobs:
                "author_icon":"${{ github.event.comment.user.avatar_url }}",
                "title": "Discussion Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
                "title_link":"${{ github.event.comment.html_url }}",
-               "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "${{ github.event.comment.body }}"
-                    }
-                  }
-               ],
-               "footer": "Send by GitHub Actions",
-               {
-          "username": "GitHub",
-          "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "attachments":[
-            {
-               "fallback":"コメントが追加されました！",
-               "author_name":"${{ github.event.comment.user.login }}",
-               "author_icon":"${{ github.event.comment.user.avatar_url }}",
-               "title": "Discussion Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
-               "title_link":"${{ github.event.comment.html_url }}",
                "text": "${{ github.event.comment.body }}",
                "footer": "Send by GitHub Actions",
                "ts":"${{ github.event.comment.created_at }}"
-            }
-        ]
-        }
             }
         ]
         }' $SLACK_WEBHOOK_URL
