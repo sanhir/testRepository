@@ -1,0 +1,37 @@
+name: Notify Slack on Discussion Comment
+
+on:
+  discussion:
+    types: [created]
+  discussion_comment:
+    types: [created]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Determine Slack Webhook URL
+      id: determine_url
+      run: |
+        case "${{ github.event.discussion.category.name }}" in
+          "General")
+            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
+            ;;
+          "Support")
+             echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
+            ;;
+          "Features")
+            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
+            ;;
+          *)
+            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
+            ;;
+        esac
+
+    - name: Send notification to Slack
+      env:
+        SLACK_WEBHOOK_URL: ${{ steps.determine_url.outputs.webhook_url }}
+      run: |
+        curl -X POST -H 'Content-type: application/json' --data '{
+          "text": "New comment on discussion: ${{ github.event.discussion.html_url }}\nComment: ${{ github.event.comment.body }}\n${{ toJSON(github.event.discussion) }}"
+        }' $SLACK_WEBHOOK_URL
