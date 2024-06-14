@@ -16,18 +16,18 @@ jobs:
       run: |
         CATEGORY_NAME="${{ github.event.discussion.category.name }}"
         if [[ "$CATEGORY_NAME" == *"FE"* && "$CATEGORY_NAME" == *"BE"* ]]; then
-          echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_OTHER }}" >> $GITHUB_ENV
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_OTHER }}" >> $GITHUB_ENV
         elif [[ "$CATEGORY_NAME" == *"FE"* ]]; then
-          echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_FE }}" >> $GITHUB_ENV
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_FE }}" >> $GITHUB_ENV
         elif [[ "$CATEGORY_NAME" == *"BE"* ]]; then
-          echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_BE }}" >> $GITHUB_ENV
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_BE }}" >> $GITHUB_ENV
         else
-          echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_OTHER }}" >> $GITHUB_ENV
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_OTHER }}" >> $GITHUB_ENV
         fi
 
     - name: Send notification to Slack
       env:
-        SLACK_WEBHOOK_URL: ${{ steps.determine_url.outputs.webhook_url }}
+        SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
       run: |
         curl -X POST -H 'Content-type: application/json' --data '{
           "text": "New comment on discussion: ${{ github.event.discussion.html_url }}\nComment: ${{ github.event.comment.body }}",
