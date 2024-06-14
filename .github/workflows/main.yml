@@ -30,20 +30,17 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
       run: |
         curl -X POST -H 'Content-type: application/json' --data '{
-          "username": "Discussions通知",
+          "username": "GitHub Discussions",
          "attachments":[
             {
-               "fallback":"Discussionのコメントが更新されました",
-               "pretext":"Discussionのコメントが更新されました",
-               "title": "#${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
-               "title_link":"${{ github.event.discussion.html_url }}",
-               "fields":[
-                  {
-                     "title":"Comment",
-                     "value":"${{ github.event.discussion.html_url }}"
-                  }
-               ],
-               "footer": "GitHub Discussion",
+               "fallback":"コメントが追加されました",
+               "pretext":"コメントが追加されました",
+               "author_name":"${{ github.event.comment.user.login }}",
+               "author_icon":"${{ github.event.comment.user.avatar_url }}",
+               "title": "Comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}",
+               "title_link":"${{ github.event.comment.html_url }}",
+               "text":"${{ github.event.comment.body }}",
+               "footer": "Lsut GitHub Discussion",
                "footer_icon": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
             }
         ],
