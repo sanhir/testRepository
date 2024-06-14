@@ -1,37 +1,18 @@
-name: Notify Slack on Discussion Comment
-
 on:
   discussion:
     types: [created]
   discussion_comment:
     types: [created]
-
 jobs:
-  notify:
+  discussion_created:
     runs-on: ubuntu-latest
+    if: github.event.discussion && !github.event.comment
     steps:
-    - name: Determine Slack Webhook URL
-      id: determine_url
-      run: |
-        case "${{ github.event.discussion.category.name }}" in
-          "General")
-            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-          "Support")
-             echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-          "Features")
-            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-          *)
-            echo "::set-output name=webhook_url::${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}"
-            ;;
-        esac
-
-    - name: Send notification to Slack
-      env:
-        SLACK_WEBHOOK_URL: ${{ steps.determine_url.outputs.webhook_url }}
-      run: |
-        curl -X POST -H 'Content-type: application/json' --data '{
-          "text": "New comment on discussion: ${{ github.event.discussion.html_url }}\nComment: ${{ github.event.comment.body }}\n${{ toJSON(github.event.discussion) }}"
-        }' $SLACK_WEBHOOK_URL
+      - run: |
+          curl -X POST -d '{ "text": "Created discussion: ${{ github.event.discussion.html_url }}" }' ${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}
+  discussion_commented:
+    runs-on: ubuntu-latest
+    if: github.event.discussion && github.event.comment
+    steps:
+      - run: |
+          curl -X POST -d '{ "text": "Created discussion comment: ${{ github.event.comment.html_url }}" }' ${{ secrets.SLACK_WEBHOOK_URL_GENERAL }}
