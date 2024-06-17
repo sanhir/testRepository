@@ -16,7 +16,7 @@ jobs:
         if [[ "$CATEGORY_NAME" == *"FE"* ]]; then
           echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_FE }}" >> $GITHUB_ENV
         else
-          exit 1
+          exit 0
         fi
     - name: Send notification to Slack
       env:
