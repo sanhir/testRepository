@@ -62,7 +62,7 @@ jobs:
                         --arg ts "$COMMENT_TIMESTAMP" '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "New discussion created: \($discussion_title)",
+          "text": "New discussion created #\($discussion_number) \($discussion_title)",
           "attachments": [
             {
               "fallback": "新しいディスカッションが作成されました！",
