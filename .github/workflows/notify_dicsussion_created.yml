@@ -8,7 +8,6 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "${{ toJSON(github.event) }}"
     - name: Determine Slack Webhook URL
       id: determine_url
       run: |
@@ -29,17 +28,17 @@ jobs:
       env:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
-        COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="${{ github.event.comment.body }}"
-        COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
+        COMMENT_URL="${{ github.event.discussion.html_url }}"
+        COMMENT_BODY="${{ github.event.discussion.body }}"
+        COMMENT_CREATED_AT="${{ github.event.discussion.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{ github.event.discussion.title }}"
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
         REPOSITORY_NAME="${{ github.event.repository.full_name }}"
-        COMMENT_USER="${{ github.event.comment.user.login }}"
-        COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
+        COMMENT_USER="${{ github.event.discussion.user.login }}"
+        COMMENT_USER_AVATAR="${{ github.event.discussion.user.avatar_url }}"
         
         # Convert the created_at timestamp to a Unix timestamp
         COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
