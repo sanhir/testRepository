@@ -1,4 +1,4 @@
-name: Notify Slack on Discussion Comment
+name: Notify Slack on Discussion Created
 
 on:
   discussion:
