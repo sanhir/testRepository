@@ -18,9 +18,9 @@ jobs:
         fi
     
     - name: Send notification to Slack
-      if: env.WEBHOOK_URL
       env:
         SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
+      if: env.SLACK_WEBHOOK_URL
       run: |
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         # Convert the created_at timestamp to a Unix timestamp
