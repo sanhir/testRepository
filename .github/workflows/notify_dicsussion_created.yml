@@ -66,7 +66,7 @@ jobs:
               "title": "#\($discussion_number) \($discussion_title)",
               "title_link": $discussion_url,
               "text": $body,
-              "footer": "\($comment_user)  <\($discussion_url)|\($discussion_category)> <\($repository_url)|\($repository_name)> Sent by GitHub Actions",
+              "footer": "\($comment_user)  <\($discussion_url)|\($discussion_category)> <\($repository_url)|\($repository_name)>",
               "footer_icon": $comment_user_avatar,
               "ts": $ts
             }
