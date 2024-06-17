@@ -65,7 +65,7 @@ jobs:
               "fallback": "新しいディスカッションが作成されました！",
               "author_name": $comment_user,
               "author_icon": $comment_user_avatar,
-              "title": $discussion_number $discussion_title,
+              "title": "\($discussion_number) \($discussion_title)",
               "title_link": $discussion_url,
               "text": $body,
               "footer": "<\($discussion_url)|\($discussion_category)> <\($repository_url)|\($repository_name)> Sent by GitHub Actions",
