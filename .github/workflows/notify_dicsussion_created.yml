@@ -39,6 +39,8 @@ jobs:
         REPOSITORY_NAME="${{ github.event.repository.full_name }}"
         COMMENT_USER="${{ github.event.discussion.user.login }}"
         COMMENT_USER_AVATAR="${{ github.event.discussion.user.avatar_url }}"
+        COMMENT_USER_URL="${{ github.event.discussion.user.url }}"
+        
         
         # Convert the created_at timestamp to a Unix timestamp
         COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
@@ -56,10 +58,11 @@ jobs:
                         --arg repository_name "$REPOSITORY_NAME" \
                         --arg comment_user "$COMMENT_USER" \
                         --arg comment_user_avatar "$COMMENT_USER_AVATAR" \
+                        --arg comment_user_url "$COMMENT_USER_URL" \
                         --arg ts "$COMMENT_TIMESTAMP" '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "New discussion created",
+          "text": "New discussion created by <\($comment_user_url)|\($comment_user)>",
           "attachments": [
             {
               "fallback": "新しいディスカッションが作成されました！",
