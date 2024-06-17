@@ -15,12 +15,13 @@ jobs:
         CATEGORY_NAME="${{ github.event.discussion.category.name }}"
         if [[ "$CATEGORY_NAME" == *"FE"* ]]; then
           echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_FE }}" >> $GITHUB_ENV
+          echo "URL_IS_SET=true" >> $GITHUB_ENV
         fi
     
     - name: Send notification to Slack
+      if: env.URL_IS_SET == 'true'
       env:
         SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
-      if: env.SLACK_WEBHOOK_URL
       run: |
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         # Convert the created_at timestamp to a Unix timestamp
