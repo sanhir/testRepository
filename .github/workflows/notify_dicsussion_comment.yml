@@ -62,10 +62,11 @@ jobs:
           "attachments": [
             {
               "fallback": "コメントが追加されました！",
-              "author_name": $comment_user,
-              "author_icon": $comment_user_avatar,
+              # "author_name": $comment_user,
+              # "author_icon": $comment_user_avatar,
               "text": $body,
-              "footer": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)> Sent by GitHub Actions",
+              "footer": "\($comment_user) <\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)> Sent by GitHub Actions",
+              "footer_icon": $comment_user_avatar,
               "ts": $ts
             }
           ]
