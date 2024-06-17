@@ -15,10 +15,10 @@ jobs:
         CATEGORY_NAME="${{ github.event.discussion.category.name }}"
         if [[ "$CATEGORY_NAME" == *"FE"* ]]; then
           echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_FE }}" >> $GITHUB_ENV
-        else
-          exit 0
         fi
+    
     - name: Send notification to Slack
+      if: env.WEBHOOK_URL
       env:
         SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
       run: |
