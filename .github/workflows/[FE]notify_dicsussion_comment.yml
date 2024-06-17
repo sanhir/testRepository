@@ -37,7 +37,7 @@ jobs:
                "author_name":"${{ github.event.comment.user.login }}",
                "author_icon":"${{ github.event.comment.user.avatar_url }}",
                "text": "${{ github.event.comment.body }}",
-               "footer": " <${{ github.event.discussion.html_url }}|${{ github.event.discussion.category.name }}  #${{ github.event.discussion.number }_${{ github.event.discussion.title }}>   <${{ github.event.repository.html_url }}|${{ github.event.repository.full_name }}>  Sent by GitHub Actions",
+               "footer": " <${{ github.event.discussion.html_url }}|${{ github.event.discussion.category.name }}  #${{ github.event.discussion.number }}_${{ github.event.discussion.title }}>   <${{ github.event.repository.html_url }}|${{ github.event.repository.full_name }}>  Sent by GitHub Actions",
                "ts":'"$COMMENT_TIMESTAMP"'
             }
         ]
