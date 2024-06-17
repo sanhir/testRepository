@@ -1,0 +1,44 @@
+name: Notify Slack on Discussion Comment
+
+on:
+  discussion_comment:
+    types: [created]
+    
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Determine Slack Webhook URL
+      id: determine_url
+      run: |
+        CATEGORY_NAME="${{ github.event.discussion.category.name }}"
+        if [[ "$CATEGORY_NAME" == *"BE"* ]]; then
+          echo "WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL_FE }}" >> $GITHUB_ENV
+          echo "SHOULD_NOTIFY=true" >> $GITHUB_ENV
+        else
+          echo "SHOULD_NOTIFY=false" >> $GITHUB_ENV
+        fi
+    
+    - name: Send notification to Slack
+      if: env.SHOULD_NOTIFY == 'true'
+      env:
+        SLACK_WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
+      run: |
+        COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
+        # Convert the created_at timestamp to a Unix timestamp
+        COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
+        curl -X POST -H 'Content-type: application/json' --data '{
+          "username": "GitHub Discussions",
+          "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
+          "text": "<${{ github.event.comment.html_url }}|New comment on #${{ github.event.discussion.number }} ${{ github.event.discussion.title }}>",
+          "attachments":[
+            {
+               "fallback":"コメントが追加されました！",
+               "author_name":"${{ github.event.comment.user.login }}",
+               "author_icon":"${{ github.event.comment.user.avatar_url }}",
+               "text": "${{ github.event.comment.body }}",
+               "footer": " <${{ github.event.discussion.html_url }}|${{ github.event.discussion.category.name }}  #${{ github.event.discussion.number }}_${{ github.event.discussion.title }}>   <${{ github.event.repository.html_url }}|${{ github.event.repository.full_name }}>  Sent by GitHub Actions",
+               "ts":'"$COMMENT_TIMESTAMP"'
+            }
+        ]
+        }' $SLACK_WEBHOOK_URL
