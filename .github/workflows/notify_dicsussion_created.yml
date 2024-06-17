@@ -17,10 +17,10 @@ jobs:
           WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_FE }}")
         fi
         if [[ "$CATEGORY_NAME" == *"BE"* ]]; then
-          WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_FE }}")
+          WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_BE }}")
         fi
         if [[ ${#WEBHOOK_URLS[@]} -eq 0 ]]; then
-          WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_OTHER }}")
+          WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_MAINTAINER }}")
         fi
         echo "WEBHOOK_URLS=${WEBHOOK_URLS[@]}" >> $GITHUB_ENV
     
