@@ -58,7 +58,7 @@ jobs:
                         --arg ts "$COMMENT_TIMESTAMP" '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "New comment on <\($url)|#\($discussion_number) \($discussion_title)>",
+          "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
           "attachments": [
             {
               "fallback": "コメントが追加されました！",
