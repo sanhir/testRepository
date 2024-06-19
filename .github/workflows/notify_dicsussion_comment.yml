@@ -22,16 +22,12 @@ jobs:
                 return `\x1A${codeBlocks.length - 1}\x1A`;
             });
 
-            // 見出しを変換
-            text = text.replace(/^(#{1,6}) (.*)/gm, (_, p1, p2) => {
-                const level = p1.length;
-                return `${'*'.repeat(level)}${p2}${'*'.repeat(level)}`;
-            });
-
-            // ボールドを変換
-            text = text.replace(/\*\*(.*?)\*\*/g, '*$1*');
             // イタリックを変換
             text = text.replace(/\*(.*?)\*/g, '_$1_');
+            // 見出しを変換
+            text = text.replace(/^(#{1,3}) (.*)/gm, (_, p1, p2) => `*${p2}*`);
+            // ボールドを変換
+            text = text.replace(/\*\*(.*?)\*\*/g, '*$1*');
             // リンクを変換
             text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<$2|$1>');
             // 箇条書きリストを変換
