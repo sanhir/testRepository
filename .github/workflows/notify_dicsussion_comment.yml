@@ -11,8 +11,6 @@ jobs:
     - name: Convert Markdown to Mrkdwn
       id: convert
       uses: actions/github-script@v7
-      env:
-        comentBody: "${{ github.event.comment.body }}"
       with:
         script: |
           // Markdownをmrkdwn形式に変換する関数
@@ -51,14 +49,14 @@ jobs:
           };
 
           // コメントの内容を取得
-          const { comentBody } = process.env;
+          const comentBody  = "${{ github.event.comment.body }}";
 
           // コメント内容をmrkdwn形式に変換
           const convertedText = markdownToMrkdwn(commentBody);
 
           // 変換結果を出力として設定
           core.setOutput('result', convertedText);
-
+          console.log(convertedText);
       
     - name: Determine Slack Webhook URL
       id: determine_url
