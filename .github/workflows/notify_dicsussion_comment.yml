@@ -173,7 +173,7 @@ jobs:
                       "text": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>"
                     }
                   ]  
-                }, 
+                }
               ],
             }
           ]
