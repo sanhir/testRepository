@@ -89,7 +89,7 @@ jobs:
       run: |
         # 環境変数から改行を元に戻す
         comment="${{ env.commentBody }}"
-        comment="${comment//<NEWLINE>/\\n}"
+        comment="${comment//<NEWLINE>/  \\n}"
         comment="${comment//<CARRIAGERETURN>/\\r}"
 
         echo "${{ env.commentBody }}"
