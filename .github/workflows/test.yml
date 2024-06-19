@@ -24,7 +24,7 @@ jobs:
           echo 'const marked = require("marked");
 
           function markdownToHtml(markdown) {
-            return marked(markdown);
+            return marked.parse(markdown);
           }
 
           function htmlToMrkdwn(html) {
