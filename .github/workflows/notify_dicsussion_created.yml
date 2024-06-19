@@ -138,17 +138,6 @@ jobs:
                     "type": "mrkdwn",
                     "text":  "*New discussion <\($comment_user_url)|#\($discussion_number) \($discussion_title)>*"
                   }  
-                }
-          ],
-          "attachments": [
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text":  $body
-                  }  
                 },
                 {
                   "type": "context",
@@ -160,7 +149,34 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*\($comment_user)*  \($discussion_category)  \($repository_name)  \($created_at)"
+                      "text": "*\($comment_user)*"
+                    }
+                  ]  
+                }
+          ],
+          "attachments": [
+            {
+              "blocks": [
+                {
+                  "type": "heading",
+                  "text": {
+                    "type": "plain_text",
+                    "text":  $discussion_title
+                  }  
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text":  $body
+                  }  
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "\($discussion_category)  \($repository_name)  \($created_at)"
                     }
                   ]  
                 },
