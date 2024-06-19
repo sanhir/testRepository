@@ -73,55 +73,54 @@ jobs:
         fi
         echo "WEBHOOK_URLS=${WEBHOOK_URLS[@]}"
 
-    - name: Send notification to Slack
-      env:
-        SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
-      run: |
-        COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="${{ env.commentBody }}"
-        COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
-        DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
-        DISCUSSION_TITLE="${{ github.event.discussion.title }}"
-        DISCUSSION_URL="${{ github.event.discussion.html_url }}"
-        DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
-        REPOSITORY_URL="${{ github.event.repository.html_url }}"
-        REPOSITORY_NAME="${{ github.event.repository.full_name }}"
-        COMMENT_USER="${{ github.event.comment.user.login }}"
-        COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
-        
-        # Convert the created_at timestamp to a Unix timestamp
-        COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
-        
-        # Create the JSON payload for Slack
-        PAYLOAD=$(jq -n --arg url "$COMMENT_URL" \
-                        --arg body "$COMMENT_BODY" \
-                        --arg created_at "$COMMENT_CREATED_AT" \
-                        --arg discussion_number "$DISCUSSION_NUMBER" \
-                        --arg discussion_title "$DISCUSSION_TITLE" \
-                        --arg discussion_url "$DISCUSSION_URL" \
-                        --arg discussion_category "$DISCUSSION_CATEGORY" \
-                        --arg repository_url "$REPOSITORY_URL" \
-                        --arg repository_name "$REPOSITORY_NAME" \
-                        --arg comment_user "$COMMENT_USER" \
-                        --arg comment_user_avatar "$COMMENT_USER_AVATAR" \
-                        --arg ts "$COMMENT_TIMESTAMP" '{
-          "username": "GitHub Discussions",
-          "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
-          "attachments": [
-            {
-              "fallback": "コメントが追加されました！",
-              "author_name": $comment_user,
-              "author_icon": $comment_user_avatar,
-              "text": $body,
-              "footer": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>",
-              "ts": $ts
-            }
-          ]
-        }')
-        
-        # Send the payload to each Slack webhook URL
-        for WEBHOOK_URL in $WEBHOOK_URLS; do
-          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $WEBHOOK_URL
-        done
-
+        - name: Send notification to Slack
+        env:
+          SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
+        run: |
+          COMMENT_URL="${{ github.event.comment.html_url }}"
+          COMMENT_BODY="${{ env.commentBody }}"
+          COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
+          DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
+          DISCUSSION_TITLE="${{ github.event.discussion.title }}"
+          DISCUSSION_URL="${{ github.event.discussion.html_url }}"
+          DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
+          REPOSITORY_URL="${{ github.event.repository.html_url }}"
+          REPOSITORY_NAME="${{ github.event.repository.full_name }}"
+          COMMENT_USER="${{ github.event.comment.user.login }}"
+          COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
+          
+          # Convert the created_at timestamp to a Unix timestamp
+          COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
+          
+          # Create the JSON payload for Slack
+          PAYLOAD=$(jq -n --arg url "$COMMENT_URL" \
+                          --arg body "$COMMENT_BODY" \
+                          --arg created_at "$COMMENT_CREATED_AT" \
+                          --arg discussion_number "$DISCUSSION_NUMBER" \
+                          --arg discussion_title "$DISCUSSION_TITLE" \
+                          --arg discussion_url "$DISCUSSION_URL" \
+                          --arg discussion_category "$DISCUSSION_CATEGORY" \
+                          --arg repository_url "$REPOSITORY_URL" \
+                          --arg repository_name "$REPOSITORY_NAME" \
+                          --arg comment_user "$COMMENT_USER" \
+                          --arg comment_user_avatar "$COMMENT_USER_AVATAR" \
+                          --arg ts "$COMMENT_TIMESTAMP" '{
+            "username": "GitHub Discussions",
+            "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
+            "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
+            "attachments": [
+              {
+                "fallback": "コメントが追加されました！",
+                "author_name": $comment_user,
+                "author_icon": $comment_user_avatar,
+                "text": $body,
+                "footer": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>",
+                "ts": $ts
+              }
+            ]
+          }')
+          
+          # Send the payload to each Slack webhook URL
+          for WEBHOOK_URL in $WEBHOOK_URLS; do
+            curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $WEBHOOK_URL
+          done
