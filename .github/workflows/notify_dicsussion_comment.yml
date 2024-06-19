@@ -101,7 +101,6 @@ jobs:
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{steps.sanitize-discussion-title.outputs.result}}"
-        DISCUSSION_TITLE="$DISCUSSION_TITLE" | sed "s/\`/\'/g")
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
@@ -130,6 +129,9 @@ jobs:
           "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
           "attachments": [
             {
+              "fallback": "コメントが追加されました！",
+              "author_name": $comment_user,
+              "author_icon": $comment_user_avatar,
               "blocks":[
                 {
                   "type": "section",
@@ -156,6 +158,8 @@ jobs:
                   ]
                 }    
               ],
+              "footer": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>",
+              "ts": $ts
             }
           ]
         }')
