@@ -130,20 +130,13 @@ jobs:
                         --arg ts "$COMMENT_TIMESTAMP" '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "New discussion created by <\($comment_user_url)|\($comment_user)>",
+          "text": "New discussion created by <\($discussion_url)|\($comment_user)>",
           "blocks":[
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text":  "New discussion created by <\($comment_user_url)|\($comment_user)>"
-                  }  
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text":  "*N#\($discussion_number) \($discussion_title)*"
+                    "text":  "*New discussion <\($comment_user_url)|#\($discussion_number) \($discussion_title)>*"
                   }  
                 }
           ],
@@ -178,7 +171,7 @@ jobs:
                       "type": "button",
                       "text": {
                           "type": "plain_text",
-                          "text": "Discussionsでディスカッションを開く"
+                          "text": "Discussionsで開く"
 
                       },
                       "url":  $url
@@ -188,6 +181,7 @@ jobs:
               ]
             }
           ]
+          
         }')
         
         # Send the payload to each Slack webhook URL
