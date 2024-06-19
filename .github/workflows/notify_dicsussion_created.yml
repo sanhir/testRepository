@@ -18,7 +18,7 @@ jobs:
         npm init -y
         npm install marked
 
-    - name: Create onvert Script
+    - name: Create Convert Script File
       run: |
         echo 'const marked = require("marked");
 
