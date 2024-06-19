@@ -49,7 +49,7 @@ jobs:
           };
 
           // コメントの内容を取得
-          const comentBody  = "${{ github.event.comment.body }}";
+          const commentBody  = "${{ github.event.comment.body }}";
 
           // コメント内容をmrkdwn形式に変換
           const convertedText = markdownToMrkdwn(commentBody);
