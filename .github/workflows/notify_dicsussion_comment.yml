@@ -22,6 +22,7 @@ jobs:
         npm install marked
 
     - name: Convert Markdown to mrkdwn
+      id: convert
       run: |
         echo 'const marked = require("marked");
 
@@ -51,11 +52,10 @@ jobs:
           return htmlToMrkdwn(html);
         }
 
-        console.log(process.argv);
         const markdownText = process.argv[2];
 
-        console.log(markdownToMrkdwn(markdownText));' > convert.js
-        node convert.js "${{ github.event.comment.body }}"
+        console.log('commentBody=' + markdownToMrkdwn(markdownText));' > convert.js
+        node convert.js "${{ github.event.comment.body }}" >> $GITHUB_ENV
 
     - name: Convert Markdown to mrkdwn
       run: |
@@ -82,7 +82,7 @@ jobs:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
         COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="${{ github.event.comment.body }}"
+        COMMENT_BODY="$${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{ github.event.discussion.title }}"
