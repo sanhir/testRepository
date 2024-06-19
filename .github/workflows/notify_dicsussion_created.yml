@@ -10,15 +10,13 @@ jobs:
     steps:
     - name: Set up Node.js
       uses: actions/setup-node@v2
-      with:
-        node-version: '14'
 
     - name: Install dependencies
       run: npm install
 
     - name: Convert Markdown to Mrkdwn
       id: convert
-      run: echo "${{ github.event.discussion.body }}" | node .github/scripts/convertMarkdownToMrkdwn.js
+      run: echo "${{ github.event.discussion.body }}" | node .convertMarkdownToMrkdwn.js
 
     - name: Determine Slack Webhook URL
       id: determine_url
