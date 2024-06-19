@@ -131,6 +131,20 @@ jobs:
             {
               "blocks":[
                 {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url":  "$comment_user_avatar",
+                      "alt_text": "icon"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*$comment_user*"
+                    }
+                  ]  
+                },
+                {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
@@ -144,16 +158,22 @@ jobs:
                       "type": "button",
                       "text": {
                           "type": "plain_text",
-                          "emoji": true,
-                          "text": "Click me"
+                          "text": "View"
 
                       },
-                      "style": "primary",
-                      "value": "click_me",
-                      "url":  "https://google.com"
+                      "url":  "$url"
                     }
                   ]
-                }    
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>"
+                    }
+                  ]  
+                }, 
               ],
             }
           ]
