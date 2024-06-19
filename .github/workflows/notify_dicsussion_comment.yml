@@ -108,9 +108,7 @@ jobs:
         COMMENT_USER="${{ github.event.comment.user.login }}"
         COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
         
-        # Convert the created_at timestamp to a Unix timestamp
-        COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
-        
+
         # Create the JSON payload for Slack
         PAYLOAD=$(jq -n --arg url "$COMMENT_URL" \
                         --arg body "$COMMENT_BODY" \
@@ -131,20 +129,6 @@ jobs:
             {
               "blocks":[
                 {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "image",
-                      "image_url":  $comment_user_avatar,
-                      "alt_text": "icon"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*\($comment_user)*  \($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)"
-                    }
-                  ]  
-                },
-                {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
@@ -164,6 +148,20 @@ jobs:
                       "url":  $url
                     }
                   ]
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                     {
+                      "type": "image",
+                      "image_url":  $comment_user_avatar,
+                      "alt_text": "icon"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*\($comment_user)*  \($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($COMMENT_CREATED_AT)"
+                    }
+                  ]  
                 }
               ],
             }
