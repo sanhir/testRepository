@@ -49,7 +49,7 @@ jobs:
             return htmlToMrkdwn(html);
           }
 
-          const markdownText = \`
+          const markdownText = `
           # 見出し1
           ## 見出し2
           ### 見出し3
@@ -69,7 +69,7 @@ jobs:
           2. 番号付きリストアイテム2
 
           [リンク](https://example.com)
-          \`;
+          `;
 
           console.log(markdownToMrkdwn(markdownText));' > convert.js
           node convert.js
