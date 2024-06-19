@@ -59,7 +59,7 @@ jobs:
     - name: Convert Markdown to mrkdwn
       id: convert
       run: |
-          node convert.js "${{ github.event.comment.body }}" 
+          node convert.js "${{ github.event.comment.body }}" >> $GITHUB_ENV
       
     - name: Determine Slack Webhook URL
       id: determine_url
@@ -96,7 +96,6 @@ jobs:
         # Convert the created_at timestamp to a Unix timestamp
         COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
 
-        echo "aaa"
         echo "$COMMENT_BODY"
         
         # Create the JSON payload for Slack
