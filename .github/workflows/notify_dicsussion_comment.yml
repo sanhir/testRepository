@@ -8,9 +8,6 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -21,7 +18,7 @@ jobs:
         npm init -y
         npm install marked
 
-    - name: Convert Markdown to mrkdwn
+    - name: Create onvert Script
       
       run: |
         echo 'const marked = require("marked");
