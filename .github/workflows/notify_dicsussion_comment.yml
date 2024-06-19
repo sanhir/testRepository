@@ -129,6 +129,20 @@ jobs:
             {
               "blocks":[
                 {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url":  $comment_user_avatar,
+                      "alt_text": "icon"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*\($comment_user)*"
+                    }
+                  ]  
+                },
+                {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
@@ -136,30 +150,11 @@ jobs:
                   }  
                 },
                 {
-                  "type": "actions",
-                  "elements": [
-                    {
-                      "type": "button",
-                      "text": {
-                          "type": "plain_text",
-                          "text": "View"
-
-                      },
-                      "url":  $url
-                    }
-                  ]
-                },
-                {
                   "type": "context",
                   "elements": [
-                     {
-                      "type": "image",
-                      "image_url":  $comment_user_avatar,
-                      "alt_text": "icon"
-                    },
                     {
                       "type": "mrkdwn",
-                      "text": "*\($comment_user)*  \($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
+                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
                     }
                   ]  
                 }
