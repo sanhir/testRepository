@@ -40,8 +40,6 @@ jobs:
             .replace(/<ol>(.*?)<\/ol>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "1. $1\n"))
             .replace(/<p>(.*?)<\/p>/g, "$1\n")
             .replace(/<\/?[^>]+(>|$)/g, "")
-            .replace(/\n/g, "<NEWLINE>")
-            .replace(/\r/g, "<CARRIAGERETURN>")
             .replace(/\\/g, "\\\\")
             .replace(/\`/g, "\\\`")
             .replace(/\"/g, "\\\"")
@@ -55,8 +53,9 @@ jobs:
         }
 
         const markdownText = process.argv[2];
+        const result = String(markdownToMrkdwn(markdownText)
 
-        console.log("commentBody=" + String(markdownToMrkdwn(markdownText)));' > convert.js
+        console.log(`commentBody<<EOF\n${result})EOF`);' > convert.js
 
     - name: Convert Markdown to mrkdwn
       id: convert
