@@ -138,20 +138,6 @@ jobs:
                     "type": "mrkdwn",
                     "text":  "*New discussion <\($comment_user_url)|#\($discussion_number) \($discussion_title)>*"
                   }  
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "image",
-                      "image_url":  $comment_user_avatar,
-                      "alt_text": "icon"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*\($comment_user)*"
-                    }
-                  ]  
                 }
           ],
           "attachments": [
@@ -175,8 +161,13 @@ jobs:
                   "type": "context",
                   "elements": [
                     {
+                      "type": "image",
+                      "image_url":  $comment_user_avatar,
+                      "alt_text": "icon"
+                    },
+                    {
                       "type": "mrkdwn",
-                      "text": "\($discussion_category)  \($repository_name)  \($created_at)"
+                      "text": "*\($comment_user)*  \($discussion_category)  \($repository_name)  \($created_at)"
                     }
                   ]  
                 },
