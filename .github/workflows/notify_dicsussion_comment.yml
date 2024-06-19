@@ -92,7 +92,7 @@ jobs:
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{ github.event.discussion.title }}"
-        DISCUSSION_TITLE="${DISCUSSION_TITLE/`/\\`}"
+        DISCUSSION_TITLE="$DISCUSSION_TITLE" | sed "s/\`/'/g")
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
