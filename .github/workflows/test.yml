@@ -49,27 +49,7 @@ jobs:
             return htmlToMrkdwn(html);
           }
 
-          const markdownText = `
-          # 見出し1
-          ## 見出し2
-          ### 見出し3
-
-          これは**太字**のテキストです。
-          これは*斜体*のテキストです。
-          これは\`コード\`です。
-
-          \`\`\`
-          これはコードブロックです。
-          \`\`\`
-
-          - リストアイテム1
-          - リストアイテム2
-
-          1. 番号付きリストアイテム1
-          2. 番号付きリストアイテム2
-
-          [リンク](https://example.com)
-          `;
+          const markdownText = const markdownText = process.argv[1];
 
           console.log(markdownToMrkdwn(markdownText));' > convert.js
-          node convert.js
+          node convert.js "${{ github.event.comment.body }}"

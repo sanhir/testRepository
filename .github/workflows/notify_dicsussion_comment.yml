@@ -8,51 +8,53 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-    - name: Convert Markdown to Mrkdwn
-      id: convert
-      uses: actions/github-script@v7
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
       with:
-        script: |
-          // Markdownをmrkdwn形式に変換する関数
-          const markdownToMrkdwn = (text) => {
-            const codeBlocks = [];
-            // コードブロックとインラインコードを一時的に置き換える
-            text = text.replace(/(```[\s\S]*?```|`[^`]*`)/g, (match) => {
-                codeBlocks.push(match);
-                return `\x1A${codeBlocks.length - 1}\x1A`;
-            });
+        node-version: '22'  # 最新のLTSバージョンを使用
 
-            // イタリックを変換
-            text = text.replace(/\*(.*?)\*/g, '_$1_');
-            // 見出しを変換
-            text = text.replace(/^(#{1,3}) (.*)/gm, (_, p1, p2) => `*${p2}*`);
-            // ボールドを変換
-            text = text.replace(/\*\*(.*?)\*\*/g, '*$1*');
-            // リンクを変換
-            text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<$2|$1>');
-            // 箇条書きリストを変換
-            text = text.replace(/^(\s*)-\s+/gm, '$1• ');
-            // 番号付きリストを変換
-            text = text.replace(/^(\s*)\d+\.\s+/gm, '$1• ');
-            // 引用を変換
-            text = text.replace(/^>\s+/gm, '> ');
-            // 水平線を変換
-            text = text.replace(/^---+/gm, '---');
-            // コードブロックとインラインコードを元に戻す
-            text = text.replace(/\x1A(\d+)\x1A/g, (_, p1) => codeBlocks[parseInt(p1, 10)]);
+    - name: Install dependencies
+      run: |
+        npm init -y
+        npm install marked
 
-            return text;
-          };
+    - name: Convert Markdown to mrkdwn
+      run: |
+        echo 'const marked = require("marked");
 
-          // コメントの内容を取得
-          const commentBody  = "${{ github.event.comment.body }}";
+        function markdownToHtml(markdown) {
+          return marked.parse(markdown);
+        }
 
-          // コメント内容をmrkdwn形式に変換
-          const convertedText = markdownToMrkdwn(commentBody);
+        function htmlToMrkdwn(html) {
+          return html
+            .replace(/<strong>(.*?)<\/strong>/g, "*$1*")
+            .replace(/<em>(.*?)<\/em>/g, "_$1_")
+            .replace(/<code>(.*?)<\/code>/g, "`$1`")
+            .replace(/<pre><code>(.*?)<\/code><\/pre>/g, "```\n$1\n```")
+            .replace(/<a href=\\"(.*?)\\">(.*?)<\/a>/g, "<$1|$2>")
+            .replace(/<h1>(.*?)<\/h1>/g, "*$1*\n")
+            .replace(/<h2>(.*?)<\/h2>/g, "*$1*\n")
+            .replace(/<h3>(.*?)<\/h3>/g, "*$1*\n")
+            .replace(/<ul>(.*?)<\/ul>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "• $1\n"))
+            .replace(/<ol>(.*?)<\/ol>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "1. $1\n"))
+            .replace(/<p>(.*?)<\/p>/g, "$1\n")
+            .replace(/<br>/g, "\n")
+            .replace(/<\/?[^>]+(>|$)/g, "");
+        }
 
-          // 変換結果を出力として設定
-          console.log(convertedText);
-          return convertedText;
+        function markdownToMrkdwn(markdown) {
+          const html = markdownToHtml(markdown);
+          return htmlToMrkdwn(html);
+        }
+
+        const markdownText = const markdownText = process.argv[1];
+
+        console.log(markdownToMrkdwn(markdownText));' > convert.js
+        node convert.js "${{ github.event.comment.body }}"
       
     - name: Determine Slack Webhook URL
       id: determine_url
@@ -75,7 +77,7 @@ jobs:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
         COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="${{ steps.convert.outputs.result }}"
+        COMMENT_BODY="${{ github.event.comment.body }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{ github.event.discussion.title }}"
