@@ -124,54 +124,58 @@ jobs:
                         --arg ts "$COMMENT_TIMESTAMP" '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-
+          "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
            "blocks":[
-              {
-                "type": "context",
-                "elements": [
-                  {
-                    "type": "image",
-                    "image_url":  $comment_user_avatar,
-                    "alt_text": "icon"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*\($comment_user)*"
-                  }
-                ]  
-              }
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url":  $comment_user_avatar,
+                      "alt_text": "icon"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*\($comment_user)*"
+                    }
+                  ]  
+                }
           ],
           "attachments": [
+            "blocks":[
               {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text":  $body
-                }  
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "View"
-
-                    },
-                    "url":  $url
-                  }
-                ]
-              },
-              {
-                "type": "context",
-                "elements": [
-                  {
+                {
+                  "type": "section",
+                  "text": {
                     "type": "mrkdwn",
-                    "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
-                  }
-                ]  
+                    "text":  $body
+                  }  
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                          "type": "plain_text",
+                          "text": "View"
+
+                      },
+                      "url":  $url
+                    }
+                  ]
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
+                    }
+                  ]  
+                }
               }
+            ]
           ]
         }')
         
