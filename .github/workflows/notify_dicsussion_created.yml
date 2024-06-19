@@ -161,7 +161,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text":  $discussion_title
+                    "text":  "#\($discussion_number) \($discussion_title)"
                   }  
                 },
                 {
