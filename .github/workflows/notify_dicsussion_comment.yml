@@ -89,7 +89,7 @@ jobs:
       run: |
         # 環境変数から改行を元に戻す
         comment="${{ env.commentBody }}"
-        comment="${comment//<NEWLINE>/\¥n}"
+        comment="${comment//<NEWLINE>/  \\n}"
         comment="${comment//<CARRIAGERETURN>/\\r}"
 
         echo "${{ env.commentBody }}"
@@ -129,7 +129,7 @@ jobs:
               "fallback": "コメントが追加されました！",
               "author_name": $comment_user,
               "author_icon": $comment_user_avatar,
-              "text": $body,
+              "text": "Hello, Slack!\nThis is a message with a newline.",
               "footer": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>",
               "ts": $ts
             }
