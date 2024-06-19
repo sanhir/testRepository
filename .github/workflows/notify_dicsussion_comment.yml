@@ -11,6 +11,8 @@ jobs:
     - name: Convert Markdown to Mrkdwn
       id: convert
       uses: actions/github-script@v7
+      env:
+        comentBody: "${{ github.event.comment.body }}"
       with:
         script: |
           // Markdownをmrkdwn形式に変換する関数
@@ -48,8 +50,9 @@ jobs:
             return text;
           };
 
-          // GitHubイベントからコメントの内容を取得
-          const commentBody = github.event.comment.body;
+          // コメントの内容を取得
+          const { comentBody } = process.env;
+
           // コメント内容をmrkdwn形式に変換
           const convertedText = markdownToMrkdwn(commentBody);
 
