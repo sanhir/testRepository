@@ -36,7 +36,7 @@ jobs:
             .replace(/<h1>(.*?)<\/h1>/g, "*$1*\n")
             .replace(/<h2>(.*?)<\/h2>/g, "*$1*\n")
             .replace(/<h3>(.*?)<\/h3>/g, "*$1*\n")
-            .replace(/<ul>(.*?)<\/ul>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "• $1\n"))
+            .replace(/<ul>(.*?)<\/ul>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "・ $1\n"))
             .replace(/<ol>(.*?)<\/ol>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "1. $1\n"))
             .replace(/<p>(.*?)<\/p>/g, "$1\n")
             .replace(/<br>/g, "\n")
@@ -56,7 +56,7 @@ jobs:
     - name: Convert Markdown to mrkdwn
       id: convert
       run: |
-          node convert.js "${{ github.event.comment.body }}" >> $GITHUB_ENV
+          node convert.js '# 見出し1\n## 見出し2\n### 見出し3\n\nこれは**太字**のテキストです。\nこれは*斜体*のテキストです。\nこれは`コード`です。\n\n```\nこれはコードブロックです。\n```\n\n- リストアイテム1\n- リストアイテム2\n\n1. 番号付きリストアイテム1\n2. 番号付きリストアイテム2\n\n[リンク](https://example.com)\n' >> $GITHUB_ENV
 
 
 
