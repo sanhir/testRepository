@@ -127,6 +127,13 @@ jobs:
           "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
            "blocks":[
                 {
+                  "type": "header",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text":  "<\($url)|New comment on #\($discussion_number) \($discussion_title)>"
+                  }  
+                },
+                {
                   "type": "context",
                   "elements": [
                     {
@@ -152,6 +159,15 @@ jobs:
                   }  
                 },
                 {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
+                    }
+                  ]  
+                },
+                {
                   "type": "actions",
                   "elements": [
                     {
@@ -164,15 +180,6 @@ jobs:
                       "url":  $url
                     }
                   ]
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
-                    }
-                  ]  
                 }
               ]
             }
