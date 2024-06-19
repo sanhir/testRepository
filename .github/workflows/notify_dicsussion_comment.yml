@@ -45,18 +45,19 @@ jobs:
 
         function markdownToMrkdwn(markdown) {
           const html = markdownToHtml(markdown);
-          return htmlToMrkdwn(html);
+          return html;
+
+          # return htmlToMrkdwn(html);
         }
 
         const markdownText = process.argv[2];
 
-        console.log(markdownText);
         console.log("commentBody=" + String(markdownToMrkdwn(markdownText)));' > convert.js
 
     - name: Convert Markdown to mrkdwn
       id: convert
       run: |
-          node convert.js "${{ github.event.comment.body }}"
+          node convert.js "${{ github.event.comment.body }}" >> $GITHUB_ENV
 
 
 
