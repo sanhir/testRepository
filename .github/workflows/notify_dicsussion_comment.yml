@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: '22'  # 最新のLTSバージョンを使用
 
@@ -22,7 +22,7 @@ jobs:
         npm install marked
 
     - name: Convert Markdown to mrkdwn
-      id: convert
+      
       run: |
         echo 'const marked = require("marked");
 
@@ -55,11 +55,11 @@ jobs:
         const markdownText = process.argv[2];
 
         console.log('commentBody=' + markdownToMrkdwn(markdownText));' > convert.js
-        node convert.js "${{ github.event.comment.body }}" >> $GITHUB_ENV
 
     - name: Convert Markdown to mrkdwn
+      id: convert
       run: |
-          node convert.js '# 見出し1\n## 見出し2\n### 見出し3\n\nこれは**太字**のテキストです。\nこれは*斜体*のテキストです。\nこれは`コード`です。\n\n```\nこれはコードブロックです。\n```\n\n- リストアイテム1\n- リストアイテム2\n\n1. 番号付きリストアイテム1\n2. 番号付きリストアイテム2\n\n[リンク](https://example.com)\n'
+          node convert.js "${{ github.event.comment.body }}"  >> $GITHUB_ENV
       
     - name: Determine Slack Webhook URL
       id: determine_url
@@ -82,7 +82,7 @@ jobs:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
         COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="$${{ env.commentBody }}"
+        COMMENT_BODY="${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{ github.event.discussion.title }}"
