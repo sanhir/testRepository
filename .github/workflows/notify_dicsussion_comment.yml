@@ -140,7 +140,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*\($comment_user)*"
+                      "text": "*\($comment_user)*  \($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)"
                     }
                   ]  
                 },
@@ -164,15 +164,6 @@ jobs:
                       "url":  $url
                     }
                   ]
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title)  \($repository_name)"
-                    }
-                  ]  
                 }
               ],
             }
