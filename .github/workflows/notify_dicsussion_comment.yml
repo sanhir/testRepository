@@ -130,9 +130,6 @@ jobs:
           "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
           "attachments": [
             {
-              "fallback": "コメントが追加されました！",
-              "author_name": $comment_user,
-              "author_icon": $comment_user_avatar,
               "blocks":[
                 {
                   "type": "section",
@@ -159,8 +156,6 @@ jobs:
                   ]
                 }    
               ],
-              "footer": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>",
-              "ts": $ts
             }
           ]
         }')
