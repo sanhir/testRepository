@@ -75,7 +75,7 @@ jobs:
         if [[ ${#WEBHOOK_URLS[@]} -eq 0 ]]; then
           WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_MAINTAINER }}")
         fi
-        echo "WEBHOOK_URLS=${WEBHOOK_URLS[@]}" >> $GITHUB_ENV
+        echo "WEBHOOK_URLS=${WEBHOOK_URLS[@]}"
 
     - name: Send notification to Slack
       env:
