@@ -92,6 +92,9 @@ jobs:
         
         # Convert the created_at timestamp to a Unix timestamp
         COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
+
+        echo "aaa"
+        echo "$COMMENT_BODY"
         
         # Create the JSON payload for Slack
         PAYLOAD=$(jq -n --arg url "$COMMENT_URL" \
