@@ -8,14 +8,6 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '22'
-
-    - name: Convert Markdown to Mrkdwn
-      id: convert
-      run: node $GITHUB_WORKSPACE/.github/scripts/convertMarkdownToMrkdwn.js "${{ github.event.discussion.body }}"
     - name: Determine Slack Webhook URL
       id: determine_url
       run: |
@@ -33,16 +25,13 @@ jobs:
           WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_MAINTAINER }}")
         fi
         echo "WEBHOOK_URLS=${WEBHOOK_URLS[@]}" >> $GITHUB_ENV
-
-        - name: Checkout repository
-        uses: actions/checkout@v2
     
     - name: Send notification to Slack
       env:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
         COMMENT_URL="${{ github.event.discussion.html_url }}"
-        COMMENT_BODY="${{ steps.convert.outputs.result }}"
+        COMMENT_BODY="${{ github.event.discussion.body }}"
         COMMENT_CREATED_AT="${{ github.event.discussion.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{ github.event.discussion.title }}"
