@@ -47,7 +47,7 @@ jobs:
           const html = markdownToHtml(markdown);
           return html;
 
-          # return htmlToMrkdwn(html);
+         
         }
 
         const markdownText = process.argv[2];
