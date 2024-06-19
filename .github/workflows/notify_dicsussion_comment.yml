@@ -39,7 +39,11 @@ jobs:
             .replace(/<ul>(.*?)<\/ul>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "• $1\n"))
             .replace(/<ol>(.*?)<\/ol>/gs, (match, p1) => p1.replace(/<li>(.*?)<\/li>/g, "1. $1\n"))
             .replace(/<p>(.*?)<\/p>/g, "$1\n")
-            .replace(/<\/?[^>]+(>|$)/g, "");
+            .replace(/<\/?[^>]+(>|$)/g, "")
+            .replace(/\\/g, "\\\\")
+            .replace(/\`/g, "\\\`")
+            .replace(/\"/g, "\\\"")
+            .replace(/\$/g, "\\$");
         }
 
         function markdownToMrkdwn(markdown) {
