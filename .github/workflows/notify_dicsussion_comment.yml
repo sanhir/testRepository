@@ -124,10 +124,7 @@ jobs:
                         --arg ts "$COMMENT_TIMESTAMP" '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-          "text": "<\($url)|New comment on #\($discussion_number) \($discussion_title)>",
-          "attachments": [
-            {
-              "blocks":[
+          "blocks":[
                 {
                   "type": "context",
                   "elements": [
@@ -142,6 +139,10 @@ jobs:
                     }
                   ]  
                 },
+          ],
+          "attachments": [
+            {
+              "blocks":[
                 {
                   "type": "section",
                   "text": {
