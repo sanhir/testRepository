@@ -158,6 +158,13 @@ jobs:
             {
               "blocks": [
                 {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text":  $discussion_title
+                  }  
+                },
+                {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
