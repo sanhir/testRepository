@@ -63,6 +63,15 @@ jobs:
       run: |
           node convert.js "${{ github.event.discussion.body }}" >> $GITHUB_ENV
 
+    - name: Sanitize Discussion Title
+      uses: actions/github-script@v7
+      id: sanitize-discussion-title
+      with:
+        script: |
+          const discussionTitle = "${{ github.event.discussion.title }}";
+          return discussionTitle.replace(/\`/g, "\\\`");
+        result-encoding: string
+
 
     - name: Determine Slack Webhook URL
       id: determine_url
@@ -90,7 +99,7 @@ jobs:
         COMMENT_BODY="${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.discussion.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
-        DISCUSSION_TITLE=$(echo "${{ github.event.discussion.title }}")
+        DISCUSSION_TITLE="${{steps.sanitize-discussion-title.outputs.result}}"
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
