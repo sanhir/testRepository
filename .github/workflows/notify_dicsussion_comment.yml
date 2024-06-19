@@ -56,7 +56,7 @@ jobs:
 
           // 変換結果を出力として設定
           console.log(convertedText);
-          core.setOutput('result', convertedText);
+          return convertedText;
       
     - name: Determine Slack Webhook URL
       id: determine_url
