@@ -15,7 +15,7 @@ jobs:
 
     - name: Convert Markdown to Mrkdwn
       id: convert
-      run: echo "${{ github.event.discussion.body }}" | node .convertMarkdownToMrkdwn.js
+      run: echo "${{ github.event.discussion.body }}" | node $GITHUB_WORKSPACE/.github/scripts/convertMarkdownToMrkdwn.js
 
     - name: Determine Slack Webhook URL
       id: determine_url
