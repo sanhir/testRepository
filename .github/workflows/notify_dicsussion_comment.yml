@@ -51,7 +51,7 @@ jobs:
 
         const markdownText = process.argv[2];
 
-        console.log("commentBody=" + escape(String(markdownToMrkdwn(markdownText))));' > convert.js
+        console.log("commentBody=" + String(markdownToMrkdwn(markdownText)));' > convert.js
 
     - name: Convert Markdown to mrkdwn
       id: convert
