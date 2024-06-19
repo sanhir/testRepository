@@ -129,7 +129,7 @@ jobs:
                 {
                   "type": "header",
                   "text": {
-                    "type": "mrkdwn",
+                    "type": "plain_text",
                     "text":  "<\($url)|New comment on #\($discussion_number) \($discussion_title)>"
                   }  
                 },
