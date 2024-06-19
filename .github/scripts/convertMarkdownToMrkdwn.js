@@ -1,4 +1,5 @@
-const fs = require('fs');
+const inputText = process.argv[2]; // コマンドライン引数から読み込む
+console.log(markdownToMrkdwn(inputText));
 
 function markdownToMrkdwn(text) {
     // コードブロックとインラインコードを一時的に置き換える
@@ -37,9 +38,4 @@ function markdownToMrkdwn(text) {
     text = text.replace(/\x1A(\d+)\x1A/g, (_, p1) => codeBlocks[parseInt(p1, 10)]);
 
     return text;
-}
-
-if (require.main === module) {
-    const inputText = fs.readFileSync(0, 'utf-8'); // 標準入力から読み込む
-    console.log(markdownToMrkdwn(inputText));
 }
