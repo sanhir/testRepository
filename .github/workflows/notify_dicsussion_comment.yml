@@ -61,7 +61,7 @@ jobs:
     - name: Convert Markdown to mrkdwn
       id: convert
       run: |
-          node convert.js '${{ github.event.comment.body }}'
+          node convert.js '${{ github.event.comment.body }}' >> $GITHUB_ENV
 
 
 
