@@ -53,7 +53,7 @@ jobs:
         }
 
         const markdownText = process.argv[2];
-        const result = String(markdownToMrkdwn(markdownText)
+        const result = String(markdownToMrkdwn(markdownText));
 
         console.log(`commentBody<<EOF\n${result})EOF`);' > convert.js
 
