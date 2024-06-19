@@ -140,7 +140,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*\($comment_user)"
+                      "text": "*\($comment_user)*"
                     }
                   ]  
                 },
@@ -170,7 +170,7 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>"
+                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title)  \($repository_name)"
                     }
                   ]  
                 }
