@@ -131,15 +131,61 @@ jobs:
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
           "text": "New discussion created by <\($comment_user_url)|\($comment_user)>",
+          "blocks":[
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text":  "New discussion created by <\($comment_user_url)|\($comment_user)>"
+                  }  
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text":  "*N#\($discussion_number) \($discussion_title)*"
+                  }  
+                }
+          ],
           "attachments": [
             {
-              "fallback": "新しいディスカッションが作成されました！",
-              "title": "#\($discussion_number) \($discussion_title)",
-              "title_link": $discussion_url,
-              "text": $body,
-              "footer": "\($comment_user)  <\($discussion_url)|\($discussion_category)> <\($repository_url)|\($repository_name)>",
-              "footer_icon": $comment_user_avatar,
-              "ts": $ts
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text":  $body
+                  }  
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url":  $comment_user_avatar,
+                      "alt_text": "icon"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*\($comment_user)*  \($discussion_category)  \($repository_name)  \($created_at)"
+                    }
+                  ]  
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                          "type": "plain_text",
+                          "text": "Discussionsで開く"
+
+                      },
+                      "url":  $url
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }')
