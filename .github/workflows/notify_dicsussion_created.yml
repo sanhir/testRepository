@@ -114,9 +114,8 @@ jobs:
         COMMENT_USER_URL="${{ github.event.discussion.user.url }}"
         
         
-        # Convert the created_at timestamp to a Unix timestamp
-        COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
-
+        # Convert the created_at timestamp to a JST timestamp
+        COMMENT_CREATED_AT=$(date -d "$COMMENT_CREATED_AT" '+%Y/%m/%d %H:%M' --utc --date='9 hour')
         
         
         # Create the JSON payload for Slack
