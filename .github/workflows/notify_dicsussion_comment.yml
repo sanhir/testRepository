@@ -142,8 +142,8 @@ jobs:
                 }
           ],
           "attachments": [
-            "blocks": [
-              {
+            {
+              "blocks": [
                 {
                   "type": "section",
                   "text": {
@@ -174,8 +174,8 @@ jobs:
                     }
                   ]  
                 }
-              }
-            ]
+              ]
+            }
           ]
         }')
         
