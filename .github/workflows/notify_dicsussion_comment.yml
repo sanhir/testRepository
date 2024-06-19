@@ -20,8 +20,7 @@ jobs:
 
     - name: Create Convert Script File
       run: |
-        echo 'const fs = require("fs");
-        const marked = require("marked");
+        echo 'const marked = require("marked");
 
         function markdownToHtml(markdown) {
           return marked.parse(markdown);
@@ -53,13 +52,14 @@ jobs:
 
         }
 
-        const markdownText = fs.readFileSync(0, "utf-8");
+        const markdownText = process.argv[2];
+
         console.log("commentBody=" + String(markdownToMrkdwn(markdownText)));' > convert.js
 
     - name: Convert Markdown to mrkdwn
       id: convert
       run: |
-        echo "${{ github.event.comment.body }}" | node convert.js 
+          node convert.js '${{ github.event.discussion.body }}' >> $GITHUB_ENV
 
 
 
