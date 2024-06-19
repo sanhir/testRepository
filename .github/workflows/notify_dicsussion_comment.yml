@@ -82,6 +82,7 @@ jobs:
       env:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
+        echo "${{ env.commentBody }}"
         COMMENT_URL="${{ github.event.comment.html_url }}"
         COMMENT_BODY="${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
