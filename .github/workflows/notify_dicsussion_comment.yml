@@ -130,7 +130,20 @@ jobs:
           "attachments": [
             {
               "blocks":[
-            
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url":  $comment_user_avatar,
+                      "alt_text": "icon"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": $comment_user
+                    }
+                  ]  
+                },
                 {
                   "type": "section",
                   "text": {
@@ -148,7 +161,7 @@ jobs:
                           "text": "View"
 
                       },
-                      "url":  "https://www.google.com/"
+                      "url":  $url
                     }
                   ]
                 }
