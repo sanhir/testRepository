@@ -79,7 +79,7 @@ jobs:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
         COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="${{ github.event.comment.body }}"
+        COMMENT_BODY="${{ steps.convert.outputs.result }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{ github.event.discussion.title }}"
