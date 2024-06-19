@@ -41,6 +41,7 @@ jobs:
             .replace(/<p>(.*?)<\/p>/g, "$1\n")
             .replace(/<\/?[^>]+(>|$)/g, "")
             .replace(/\\/g, "\\\\")
+            .replace(/\`/g, "\\\`")
             .replace(/\"/g, "\\\"")
             .replace(/\$/g, "\\$");
         }
