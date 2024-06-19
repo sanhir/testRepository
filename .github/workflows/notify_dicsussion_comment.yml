@@ -133,6 +133,32 @@ jobs:
               "fallback": "コメントが追加されました！",
               "author_name": $comment_user,
               "author_icon": $comment_user_avatar,
+              "blocks":[
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text":  $body
+                  }  
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                          "type": "plain_text",
+                          "emoji": true,
+                          "text": "Click me"
+
+                      },
+                      "style": "primary",
+                      "value": "click_me",
+                      "url":  "https://google.com"
+                    }
+                  ]
+                }    
+              ],
               "text": $body,
               "footer": "<\($discussion_url)|\($discussion_category) #\($discussion_number)_\($discussion_title)> <\($repository_url)|\($repository_name)>",
               "ts": $ts
