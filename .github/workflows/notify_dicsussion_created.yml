@@ -90,8 +90,7 @@ jobs:
         COMMENT_BODY="${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.discussion.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
-        DISCUSSION_TITLE="${{ github.event.discussion.title }}"
-        CONVERTED_DISCUSSION_TITLE="$DISCUSSION_TITLE" | sed "s/\`/\'/g")√
+        DISCUSSION_TITLE="${{ github.event.discussion.title }}" | sed "s/\`/\'/g")√
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
@@ -104,7 +103,6 @@ jobs:
         # Convert the created_at timestamp to a Unix timestamp
         COMMENT_TIMESTAMP=$(date -d "$COMMENT_CREATED_AT" +%s)
 
-        echo $CONVERTED_DISCUSSION_TITLE
         
         
         # Create the JSON payload for Slack
@@ -112,7 +110,7 @@ jobs:
                         --arg body "$COMMENT_BODY" \
                         --arg created_at "$COMMENT_CREATED_AT" \
                         --arg discussion_number "$DISCUSSION_NUMBER" \
-                        --arg discussion_title "$CONVERTED_DISCUSSION_TITLE" \
+                        --arg discussion_title "$DISCUSSION_TITLE" \
                         --arg discussion_url "$DISCUSSION_URL" \
                         --arg discussion_category "$DISCUSSION_CATEGORY" \
                         --arg repository_url "$REPOSITORY_URL" \
