@@ -130,6 +130,7 @@ jobs:
           "attachments": [
             {
               "blocks":[
+            
                 {
                   "type": "section",
                   "text": {
@@ -147,11 +148,11 @@ jobs:
                           "text": "View"
 
                       },
-                      "url":  "$url"
+                      "url":  "https://www.google.com/"
                     }
                   ]
                 }
-              ]
+              ],
             }
           ]
         }')
