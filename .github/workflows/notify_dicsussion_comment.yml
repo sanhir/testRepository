@@ -41,8 +41,9 @@ jobs:
             .replace(/<p>(.*?)<\/p>/g, "$1\n")
             .replace(/<br>/g, "\n")
             .replace(/<\/?[^>]+(>|$)/g, "")
-            .replace(/\"/g, "\\\"")
-            .replace(/\`/g, "\\`");
+            .replace(/\/g, "\`")
+            .replace(/"/g, "\\\"")
+            .replace(/\$/g, "\\$");
         }
 
         function markdownToMrkdwn(markdown) {
