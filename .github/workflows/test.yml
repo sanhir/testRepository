@@ -71,7 +71,5 @@ jobs:
           [リンク](https://example.com)
           `;
 
-          console.log("aa");
-
           console.log(markdownToMrkdwn(markdownText));' > convert.js
           node convert.js
