@@ -113,7 +113,7 @@ jobs:
         COMMENT_USER="${{ github.event.comment.user.login }}"
         COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
 
-        JST_DATE=$(date -d "$COMMENT_CREATED_AT" '+%Y/%m/%d %H:%M' --utc --date='9 hour')
+        COMMENT_CREATED_AT=$(date -d "$COMMENT_CREATED_AT" '+%Y/%m/%d %H:%M' --utc --date='9 hour')
         
 
         # Create the JSON payload for Slack
@@ -128,7 +128,7 @@ jobs:
                         --arg repository_name "$REPOSITORY_NAME" \
                         --arg comment_user "$COMMENT_USER" \
                         --arg comment_user_avatar "$COMMENT_USER_AVATAR" \
-                        --arg ts "$JST_DATE" '{
+                        --arg ts "$COMMENT_CREATED_AT" '{
           "username": "GitHub Discussions",
           "icon_url": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
            "blocks":[
