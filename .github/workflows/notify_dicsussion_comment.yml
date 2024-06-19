@@ -68,7 +68,9 @@ jobs:
         if [[ "$CATEGORY_NAME" == *"BE"* ]]; then
           WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_BE }}")
         fi
-        if [[ ${#WEBHOOK_URLS[@]} -eq 0 ]]; then
+        if [[ "$CATEGORY_NAME" == *"FE"* && "$CATEGORY_NAME" == *"BE"* ]]; then
+          WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_MAINTAINER }}")
+        elif [[ ${#WEBHOOK_URLS[@]} -eq 0 ]]; then
           WEBHOOK_URLS+=("${{ secrets.SLACK_WEBHOOK_URL_MAINTAINER }}")
         fi
         echo "WEBHOOK_URLS=${WEBHOOK_URLS[@]}"
