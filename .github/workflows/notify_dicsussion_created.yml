@@ -178,7 +178,7 @@ jobs:
                       "type": "button",
                       "text": {
                           "type": "plain_text",
-                          "text": "Discussionsで開く"
+                          "text": "Discussionsでディスカッションを開く"
 
                       },
                       "url":  $url
