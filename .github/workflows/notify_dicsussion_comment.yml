@@ -51,7 +51,7 @@ jobs:
           return htmlToMrkdwn(html);
         }
 
-        const markdownText = const markdownText = process.argv[1];
+        const markdownText = process.argv[1];
 
         console.log(markdownToMrkdwn(markdownText));' > convert.js
         node convert.js "${{ github.event.comment.body }}"
