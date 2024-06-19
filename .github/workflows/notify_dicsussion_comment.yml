@@ -55,8 +55,8 @@ jobs:
           const convertedText = markdownToMrkdwn(commentBody);
 
           // 変換結果を出力として設定
-          core.setOutput('result', 'convertedText');
           console.log(convertedText);
+          core.setOutput('result', convertedText);
       
     - name: Determine Slack Webhook URL
       id: determine_url
