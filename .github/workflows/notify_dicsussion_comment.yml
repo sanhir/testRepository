@@ -159,7 +159,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*\($comment_user)*  \($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($COMMENT_CREATED_AT)"
+                      "text": "*\($comment_user)*  \($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
                     }
                   ]  
                 }
