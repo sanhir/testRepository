@@ -8,6 +8,8 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
+    
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -69,7 +71,7 @@ jobs:
       id: map_mentions
       run: |
         # Load the user mapping from the JSON file
-        user_mapping=$(cat user_mapping.json)
+        user_mapping=$(cat .github/workflows/user_mapping.json)
         
         # Define the message with GitHub mentions
         message="GitHubのメンションをSlackのメンションに変換します: @github_user1 @github_user2 @github_user3"
