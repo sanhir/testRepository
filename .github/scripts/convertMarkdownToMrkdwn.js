@@ -1,4 +1,6 @@
-// Markdown形式のメッセージをmrkdwnに変換するスクリプト
+/**
+ * Markdown形式のメッセージをmrkdwnに変換するスクリプト
+ **/
 const marked = require("marked");
 
 function markdownToHtml(markdown) {
@@ -31,7 +33,9 @@ function markdownToMrkdwn(markdown) {
     return htmlToMrkdwn(html);
 }
 
+// 与えられた文字列をmrkdwnに変換
 const markdownText = process.argv[2];
 const result = String(markdownToMrkdwn(markdownText));
 
+// 変換後のメッセージを環境変数に設定する
 console.log(`commentBody<<EOF\n${result}\nEOF`);

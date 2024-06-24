@@ -23,25 +23,15 @@ jobs:
 
     - name: Convert Markdown to mrkdwn
       # markdownをmrkdwnに変換するスクリプトを実行
-      id: convert
+      id: mrkdwn
       run: |
           node .github/scripts/convertMarkdownToMrkdwn.js '${{ github.event.comment.body }}' >> $GITHUB_ENV
 
-    - name: Map GitHub to Slack Mentions
-      id: map_mentions
+    - name: Convert Mention
+      # GitHubのメンションをSlackメンションに変換するスクリプトを実行 
+      id: mention
       run: |
-        # ユーザーのSlack/GithubマッピングをJSONファイルから取得
-        user_mapping=$(cat .github/scripts/slack-github_user_mapping.json)
-
-        message = `${{env.commentBody}}`
-        
-        # GitHubユーザー毎にSlackのメンションに置換
-        for github_user in $(echo $user_mapping | jq -r 'keys[]'); do
-          slack_user=$(echo $user_mapping | jq -r --arg key "$github_user" '.[$key]')
-          message=${$message//@$github_user/<@$slack_user>}
-        done
-        
-        echo "commentBody=$message" >> $GITHUB_ENV
+          node .github/scripts/convertMentions.js '${{ env.commentBody }}' >> $GITHUB_ENV
 
     - name: Sanitize Discussion Title
       # discussionタイトルのバッククォートをエスケープする
