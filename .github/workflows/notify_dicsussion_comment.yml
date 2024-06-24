@@ -131,7 +131,7 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)"
+                      "text": "\($discussion_category)  #\($discussion_number)_\($discussion_title) \($repository_name)"
                     }
                   ]  
                 },
