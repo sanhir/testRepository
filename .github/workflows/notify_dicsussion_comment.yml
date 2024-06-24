@@ -48,7 +48,7 @@ jobs:
       # discussionタイトルのバッククォートをエスケープする
       id: sanitize-discussion-title
       run: |
-          node .github/scripts/sanitizeTitleBackquote.js '${{ github.event.discussion.title }}' >> $GITHUB_OUTPUT
+          node .github/scripts/sanitizeTitleBackquote.js '${{ github.event.discussion.title }}' >> $GITHUB_ENV
 
 
     - name: Determine Slack Webhook URL
@@ -80,7 +80,7 @@ jobs:
         COMMENT_BODY="${{ env.message }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
-        DISCUSSION_TITLE="${{steps.sanitize-discussion-title.outputs.result}}"
+        DISCUSSION_TITLE="${{env.sanitizedTitle}}"
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
