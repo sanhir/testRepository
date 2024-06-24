@@ -8,6 +8,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+    # スクリプトファイルにアクセスするためチェックアウト 
     - uses: actions/checkout@v4
 
     - name: Setup Node.js
@@ -69,7 +70,7 @@ jobs:
         COMMENT_BODY="${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
-        DISCUSSION_TITLE="${{env.sanitizedTitle}}"
+        DISCUSSION_TITLE="${{ env.sanitizedTitle }}"
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
@@ -77,7 +78,7 @@ jobs:
         COMMENT_USER="${{ github.event.comment.user.login }}"
         COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
 
-        # Slack向けのpayloadを作成
+        # Slackに送信する JSON payload を作成
         PAYLOAD=$(jq -n --arg url "$COMMENT_URL" \
                         --arg body "$COMMENT_BODY" \
                         --arg created_at "$COMMENT_CREATED_AT" \
@@ -153,7 +154,7 @@ jobs:
           ]
         }')
         
-        # 各Slack webhook URLにpayloadを送信
+        # 各 Slack webhook URL に作成した JSON payload を送信
         for WEBHOOK_URL in $WEBHOOK_URLS; do
           curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $WEBHOOK_URL
         done

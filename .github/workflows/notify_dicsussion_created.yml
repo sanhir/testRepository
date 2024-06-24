@@ -8,6 +8,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+    # スクリプトファイルにアクセスするためチェックアウト 
     - uses: actions/checkout@v4
 
     - name: Setup Node.js
@@ -23,20 +24,21 @@ jobs:
 
     - name: Convert Markdown to mrkdwn
       # markdownをmrkdwnに変換するスクリプトを実行
-      id: convert
+      id: mrkdwn
       run: |
           node .github/scripts/convertMarkdownToMrkdwn.js "${{ github.event.discussion.body }}" >> $GITHUB_ENV
 
+    - name: Convert Mention
+      # GitHubのメンションをSlackメンションに変換するスクリプトを実行 
+      id: mention
+      run: |
+          node .github/scripts/convertMentions.js '${{ env.commentBody }}' >> $GITHUB_ENV
+
     - name: Sanitize Discussion Title
       # discussionタイトルのバッククォートをエスケープする
-      uses: actions/github-script@v7
       id: sanitize-discussion-title
-      with:
-        script: |
-          const discussionTitle = "${{ github.event.discussion.title }}";
-          return discussionTitle.replace(/\`/g, "\\\`");
-        result-encoding: string
-
+      run: |
+          node .github/scripts/sanitizeTitleBackquote.js '${{ github.event.discussion.title }}' >> $GITHUB_ENV
 
     - name: Determine Slack Webhook URL
       # Slackの通知先を決定
@@ -66,7 +68,7 @@ jobs:
         COMMENT_BODY="${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.discussion.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
-        DISCUSSION_TITLE="${{steps.sanitize-discussion-title.outputs.result}}"
+        DISCUSSION_TITLE="${{ env.sanitizedTitle }}"
         DISCUSSION_URL="${{ github.event.discussion.html_url }}"
         DISCUSSION_CATEGORY="${{ github.event.discussion.category.name }}"
         REPOSITORY_URL="${{ github.event.repository.html_url }}"
@@ -76,11 +78,7 @@ jobs:
         COMMENT_USER_URL="${{ github.event.discussion.user.url }}"
         
         
-        # Convert the created_at timestamp to a JST timestamp
-        COMMENT_CREATED_AT=$(date -d "$COMMENT_CREATED_AT" '+%Y/%m/%d %H:%M' --utc --date='9 hour')
-        
-        
-        # Create the JSON payload for Slack
+        # Slackに送信する JSON payload を作成
         PAYLOAD=$(jq -n --arg url "$COMMENT_URL" \
                         --arg body "$COMMENT_BODY" \
                         --arg created_at "$COMMENT_CREATED_AT" \
@@ -133,7 +131,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*\($comment_user)*  \($discussion_category)  \($repository_name)  \($created_at)"
+                      "text": "*\($comment_user)*  \($discussion_category)  \($repository_name)"
                     }
                   ]  
                 },
@@ -157,7 +155,7 @@ jobs:
           
         }')
         
-        # Send the payload to each Slack webhook URL
+        # 各 Slack webhook URL に作成した JSON payload を送信
         for WEBHOOK_URL in $WEBHOOK_URLS; do
           curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $WEBHOOK_URL
         done
