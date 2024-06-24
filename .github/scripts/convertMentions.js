@@ -17,4 +17,4 @@ for (const [githubUser, slackUser] of Object.entries(userMapping)) {
 }
 
 // 変換後のメッセージを環境変数に設定する
-console.log(`commentBody<<EOF\n${result}\nEOF`);
+console.log(`commentBody<<EOF\n${message}\nEOF`);
