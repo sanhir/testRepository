@@ -33,7 +33,7 @@ jobs:
         # ユーザーのSlack/GithubマッピングをJSONファイルから取得
         user_mapping=$(cat .github/scripts/slack-github_user_mapping.json)
 
-        message = ${{env.commentBody}}
+        message = "${{env.commentBody}}"
         
         # GitHubユーザー毎にSlackのメンションに置換
         for github_user in $(echo $user_mapping | jq -r 'keys[]'); do
