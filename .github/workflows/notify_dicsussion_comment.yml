@@ -17,6 +17,7 @@ jobs:
       run: |
         npm init -y
         npm install marked
+        sudo apt-get install -y jq
 
     - name: Create Convert Script File
       # markdownをmrkdwnに変換するスクリプトファイルを作成
@@ -51,7 +52,6 @@ jobs:
         function markdownToMrkdwn(markdown) {
           const html = markdownToHtml(markdown);
           return htmlToMrkdwn(html);
-
         }
 
         const markdownText = process.argv[2];
@@ -64,6 +64,23 @@ jobs:
       id: convert
       run: |
           node convert.js '${{ github.event.comment.body }}' >> $GITHUB_ENV
+
+    - name: Map GitHub to Slack Mentions
+      id: map_mentions
+      run: |
+        # Load the user mapping from the JSON file
+        user_mapping=$(cat user_mapping.json)
+        
+        # Define the message with GitHub mentions
+        message="GitHubのメンションをSlackのメンションに変換します: @github_user1 @github_user2 @github_user3"
+        
+        # Iterate over each GitHub user and replace with Slack user ID
+        for github_user in $(echo $user_mapping | jq -r 'keys[]'); do
+          slack_user=$(echo $user_mapping | jq -r --arg key "$github_user" '.[$key]')
+          message=${message//@$github_user/<@$slack_user>}
+        done
+        
+        echo "message=$message" >> $GITHUB_ENV
 
     - name: Sanitize Discussion Title
       # discussionタイトルのバッククォートをエスケープする
@@ -102,7 +119,7 @@ jobs:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
         COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="${{ env.commentBody }}"
+        COMMENT_BODY="${{ env.message }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{steps.sanitize-discussion-title.outputs.result}}"
