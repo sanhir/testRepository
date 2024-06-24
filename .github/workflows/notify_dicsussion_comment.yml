@@ -8,10 +8,12 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-    # スクリプトファイルにアクセスするためチェックアウト 
-    - uses: actions/checkout@v4
+    - name: Checkout default branch
+      # スクリプトファイルにアクセスするためチェックアウト 
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
+      # スクリプト実行のためNodeを準備
       uses: actions/setup-node@v4
       with:
         node-version: '22'  # 最新のLTSバージョンを使用
@@ -20,7 +22,6 @@ jobs:
       run: |
         npm init -y
         npm install marked
-        sudo apt-get install -y jq
 
     - name: Convert Markdown to mrkdwn
       # markdownをmrkdwnに変換するスクリプトを実行
