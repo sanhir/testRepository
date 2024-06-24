@@ -30,19 +30,16 @@ jobs:
     - name: Map GitHub to Slack Mentions
       id: map_mentions
       run: |
-        # Load the user mapping from the JSON file
+        # ユーザーのSlack/GithubマッピングをJSONファイルから取得
         user_mapping=$(cat .github/scripts/slack-github_user_mapping.json)
         
-        # Define the message with GitHub mentions
-        message="GitHubのメンションをSlackのメンションに変換します: @github_user1 @github_user2 @github_user3"
-        
-        # Iterate over each GitHub user and replace with Slack user ID
+        # GitHubユーザー毎にSlackのメンションに置換
         for github_user in $(echo $user_mapping | jq -r 'keys[]'); do
           slack_user=$(echo $user_mapping | jq -r --arg key "$github_user" '.[$key]')
-          message=${message//@$github_user/<@$slack_user>}
+          message=${${{env.commentBody}}//@$github_user/<@$slack_user>}
         done
         
-        echo "message=$message" >> $GITHUB_ENV
+        echo "commentBody=$message" >> $GITHUB_ENV
 
     - name: Sanitize Discussion Title
       # discussionタイトルのバッククォートをエスケープする
@@ -77,7 +74,7 @@ jobs:
         SLACK_WEBHOOK_URLS: ${{ env.WEBHOOK_URLS }}
       run: |
         COMMENT_URL="${{ github.event.comment.html_url }}"
-        COMMENT_BODY="${{ env.message }}"
+        COMMENT_BODY="${{ env.commentBody }}"
         COMMENT_CREATED_AT="${{ github.event.comment.created_at }}"
         DISCUSSION_NUMBER="${{ github.event.discussion.number }}"
         DISCUSSION_TITLE="${{env.sanitizedTitle}}"
@@ -88,10 +85,7 @@ jobs:
         COMMENT_USER="${{ github.event.comment.user.login }}"
         COMMENT_USER_AVATAR="${{ github.event.comment.user.avatar_url }}"
 
-        # Convert the created_at timestamp to a JST timestamp
-        COMMENT_CREATED_AT=$(date -d "$COMMENT_CREATED_AT" '+%Y/%m/%d %H:%M' --utc --date='9 hour')
-
-        # Create the JSON payload for Slack
+        # Slack向けのpayloadを作成
         PAYLOAD=$(jq -n --arg url "$COMMENT_URL" \
                         --arg body "$COMMENT_BODY" \
                         --arg created_at "$COMMENT_CREATED_AT" \
@@ -144,7 +138,7 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)  \($created_at)"
+                      "text": "\($discussion_category) #\($discussion_number)_\($discussion_title) \($repository_name)"
                     }
                   ]  
                 },
@@ -167,7 +161,7 @@ jobs:
           ]
         }')
         
-        # Send the payload to each Slack webhook URL
+        # 各Slack webhook URLにpayloadを送信
         for WEBHOOK_URL in $WEBHOOK_URLS; do
           curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $WEBHOOK_URL
         done
