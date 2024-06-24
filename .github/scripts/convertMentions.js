@@ -4,7 +4,7 @@
 const fs = require('fs');
 
 // ユーザーマッピングを読み込む
-const userMapping = JSON.parse(fs.readFileSync('user_mapping.json', 'utf8'));
+const userMapping = JSON.parse(fs.readFileSync('slack-github_user_mapping.json', 'utf8'));
 
 // メッセージを定義する
 let message = process.argv[2];
